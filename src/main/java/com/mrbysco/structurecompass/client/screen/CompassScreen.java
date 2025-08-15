@@ -174,8 +174,18 @@ public class CompassScreen extends Screen {
 	}
 
 	private void reloadStructures() {
-		this.structures = this.unsortedStructures.stream().
-				filter(struc -> StringUtils.toLowerCase(struc.toString()).contains(StringUtils.toLowerCase(search.getValue()))).collect(Collectors.toList());
+		this.structures = this.unsortedStructures.stream()
+				.filter(struc -> {
+					// 本地化修改：搜索
+					String translationKey = "structure." + struc.getNamespace() + "." + struc.getPath();
+					String displayName = Component.translatable(translationKey).getString();
+
+					String searchText = StringUtils.toLowerCase(search.getValue());
+
+					return StringUtils.toLowerCase(displayName).contains(searchText)
+							|| StringUtils.toLowerCase(struc.toString()).contains(searchText);
+				})
+				.collect(Collectors.toList());
 		checkStages();
 		lastFilterText = search.getValue();
 	}

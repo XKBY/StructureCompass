@@ -52,11 +52,13 @@ public class StructureListWidget extends ObjectSelectionList<ListEntry> {
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
-			String structureName = structureLocation.toString();
-			Component name = Component.literal(structureName);
+			//本地化修改：渲染
+			String structureName = "structure." + structureLocation.getNamespace() + "." + structureLocation.getPath();
+			Component name = Component.translatable(structureName);
 			Font font = this.parent.getFontRenderer();
-			guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(name, listWidth))),
-					(this.parent.width / 2) - (font.width(structureName) / 2) + 3, top + 6, 0xFFFFFF, false);
+			String displayText = name.getString();
+			guiGraphics.drawString(font, Language.getInstance().getVisualOrder(FormattedText.composite(font.substrByWidth(Component.literal(displayText), listWidth))),
+					(this.parent.width / 2) - (font.width(displayText) / 2) + 3, top + 6, 0xFFFFFF, false);
 		}
 
 		@Override
